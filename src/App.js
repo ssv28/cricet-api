@@ -29,12 +29,13 @@ const App = () => {
       });
   };
 
-  // Handle when a match type is clicked (header tab)
+  //(header tab)
   const handleMatchClick = (matchType) => {
-    // Filter series matches based on the matchType (e.g., "International")
+
     const seriesMatches = matchType.seriesMatches.map((seriesMatch) => {
       return seriesMatch.seriesAdWrapper?.seriesName;
     }).filter(Boolean); // Remove any undefined/null entries
+
 
     setSeriesList(seriesMatches); // Update series list
   };
@@ -44,19 +45,23 @@ const App = () => {
       <header className="header">
         <h1 className="title">Cricket Match Series</h1>
         <nav className="nav">
-          {data.map((matchType, index) => (
+          {
+          data.map((matchType, index) => (
             <div 
               key={index} 
               className="nav-item" 
               onClick={() => handleMatchClick(matchType)}
             >
               {matchType.matchType}
+
             </div>
-          ))}
+          ))
+          }
         </nav>
       </header>
 
-      {/* Display series names in a card-like layout */}
+      {/* show series name in a card */}
+
       <div className="series-list">
         {
        
