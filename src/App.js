@@ -1,93 +1,18 @@
-// // import axios from 'axios';
-// // import React, { useEffect, useState } from 'react';
-
-// // const App = () => {
-// //   let [data, setData] = useState([]);
-
-// //   useEffect(() => {
-// //     // API call
-// //     axios
-// //       .get("https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent", {
-// //         headers: {
-// //           'x-rapidapi-key': '86b399ecc2msh04a71e55aecf1d6p111bfajsn777923905878',
-// //           'x-rapidapi-host': 'cricbuzz-cricket.p.rapidapi.com',
-// //         },
-// //       })
-// //       .then((res) => {
-// //         console.log(res.data);
-// //         setData(res.data);
-// //       })
-// //       .catch((err) => {
-// //         console.log(err);
-// //       });
-// //   }, []);
-
-// //   return (
-// //     <>
-
-// //     </>
-// //   );
-// // };
-
-// // export default App;
-// import axios from 'axios';
-// import React, { useState } from 'react';
-
-// const App = () => {
-//   const [data, setData] = useState([]);
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const fetchData = () => {
-//     setIsLoading(true); // Show loading state during API call
-//     axios
-//       .get("https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent", {
-//         headers: {
-//           'x-rapidapi-key': '86b399ecc2msh04a71e55aecf1d6p111bfajsn777923905878',
-//           'x-rapidapi-host': 'cricbuzz-cricket.p.rapidapi.com',
-//         },
-//       })
-//       .then((res) => {
-//         console.log(res.data);
-//         setData(res.data.filters); // Update state with the API response data
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       })
-//       .finally(() => {
-//         setIsLoading(false); // Hide loading state after API call
-//       });
-//   };
-
-//   return (
-//     <div>
-//       <button onClick={fetchData}>Fetch Match Types</button>
-
-//       {isLoading ? (
-//         <p>Loading...</p>
-//       ) : (
-//         <ul>
-//           {data?.matchType?.map((match, index) => (
-//             <button key={index}>{match}</button>
-//           ))}
-//         </ul>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default App;
-
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './App.css';  // Import custom CSS for styling
 
 const App = () => {
   const [data, setData] = useState([]);               // To store match data
-  const [isLoading, setIsLoading] = useState(false); // To manage loading state
-  const [selectedSeriesName, setSelectedSeriesName] = useState(""); // To store selected series name
+  const [seriesList, setSeriesList] = useState([]);   // To store series data for a specific match type
+
+  // Fetch data when the component mounts
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // Fetch data from API
   const fetchData = () => {
-    setIsLoading(true); // Show loading state during API call
     axios
       .get("https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent", {
         headers: {
@@ -96,48 +21,55 @@ const App = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        setData(res.data.filters); // Update state with the match list data
+        const typeMatches = res.data.typeMatches || [];
+        setData(typeMatches); // Update state with the match types
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false); // Hide loading state after API call
       });
   };
 
-  // Handle when a match type button is clicked
-  const handleMatchClick = (match) => {
-    setSelectedSeriesName(match.matchType.seriesName); // Display series name when match is clicked
-    console.log(match.matchType.seriesName);
+  // Handle when a match type is clicked (header tab)
+  const handleMatchClick = (matchType) => {
+    // Filter series matches based on the matchType (e.g., "International")
+    const seriesMatches = matchType.seriesMatches.map((seriesMatch) => {
+      return seriesMatch.seriesAdWrapper?.seriesName;
+    }).filter(Boolean); // Remove any undefined/null entries
+
+    setSeriesList(seriesMatches); // Update series list
   };
 
   return (
-    <div>
-      <button onClick={fetchData}>Fetch Match Types</button>
+    <div className="container">
+      <header className="header">
+        <h1 className="title">Cricket Match Series</h1>
+        <nav className="nav">
+          {data.map((matchType, index) => (
+            <div 
+              key={index} 
+              className="nav-item" 
+              onClick={() => handleMatchClick(matchType)}
+            >
+              {matchType.matchType}
+            </div>
+          ))}
+        </nav>
+      </header>
 
-
-      <div>
-
-      {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <ul>
-            {data?.matchType?.map((match, index) => (
-              <button key={index} onClick={handleMatchClick}>{match}</button>
-            ))}
-          </ul>
-        )}
+      {/* Display series names in a card-like layout */}
+      <div className="series-list">
+        {
+       
+          seriesList.map((seriesName, index) => (
+            
+            <div key={index} className="series-card">
+              <p>{seriesName}</p>
+            </div>
+            
+          ))
+        
+        }
       </div>
-
-
-      {/* Display selected series name */}
-      {selectedSeriesName && (
-
-        <p>Series Name: {selectedSeriesName}</p>
-
-      )}
     </div>
   );
 };
