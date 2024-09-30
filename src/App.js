@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import './App.css';  // Import custom CSS for styling
+import './App.css'; 
 
 const App = () => {
   const [data, setData] = useState([]);               // To store match data
@@ -21,8 +21,10 @@ const App = () => {
         },
       })
       .then((res) => {
-        const typeMatches = res.data.typeMatches || [];
-        setData(typeMatches); // Update state with the match types
+        // const typeMatches = res.data.typeMatches || [];
+        console.log(res.data.typeMatches);
+        setData(res.data.typeMatches); 
+
       })
       .catch((err) => {
         console.log(err);
@@ -46,7 +48,7 @@ const App = () => {
         <h1 className="title">Cricket Match Series</h1>
         <nav className="nav">
           {
-          data.map((matchType, index) => (
+          data.map((matchType, index) => (         //international, ledged, dynemic,women
             <div 
               key={index} 
               className="nav-item" 
