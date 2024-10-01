@@ -1,6 +1,6 @@
+import './App.css'; 
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import './App.css'; 
 
 const App = () => {
   const [data, setData] = useState([]);               // To store match data
@@ -8,11 +8,11 @@ const App = () => {
 
   // Fetch data when the component mounts
   useEffect(() => {
-    fetchData();
+    allData();
   }, []);
 
   // Fetch data from API
-  const fetchData = () => {
+  const allData = () => {
     axios
       .get("https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent", {
         headers: {
