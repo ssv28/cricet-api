@@ -34,7 +34,11 @@ const App = () => {
   //(header tab)
   const handleMatchClick = (matchType) => {
 
+    console.log(matchType);
+    
     const seriesMatches = matchType.seriesMatches.map((seriesMatch) => {
+      console.log("=======>>",seriesMatch);
+      
       return seriesMatch.seriesAdWrapper?.seriesName;
     }).filter(Boolean); // Remove any undefined/null entries
 
@@ -54,8 +58,8 @@ const App = () => {
               className="nav-item" 
               onClick={() => handleMatchClick(matchType)}
             >
-              {matchType.matchType}
-
+              {matchType.matchType}         
+            {/* sub-matches series */}
             </div>
           ))
           }
