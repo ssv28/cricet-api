@@ -52,8 +52,8 @@ const App = () => {
                 className="nav-item"
                 onClick={() => handleMatchClick(matchType)}
               >
-                {matchType.matchType}
                 {/* sub-matches series */}
+                {matchType.matchType}
               </div>
             ))
           }
