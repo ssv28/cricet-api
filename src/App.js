@@ -6,12 +6,12 @@ const App = () => {
   const [data, setData] = useState([]);               // To store match data
   const [seriesList, setSeriesList] = useState([]);   // To store series data for a specific match type
 
-  // Fetch data when the component mounts
+  
   useEffect(() => {
     allData();
   }, []);
 
-  // Fetch data from API
+  // data from API
   const allData = () => {
     axios
       .get("https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent", {
@@ -21,7 +21,6 @@ const App = () => {
         },
       })
       .then((res) => {
-        // const typeMatches = res.data.typeMatches || [];
         console.log(res.data.typeMatches);
         setData(res.data.typeMatches); 
 
