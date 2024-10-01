@@ -1,4 +1,4 @@
-import './App.css'; 
+import './App.css';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
@@ -6,7 +6,7 @@ const App = () => {
   const [data, setData] = useState([]);               // To store match data
   const [seriesList, setSeriesList] = useState([]);   // To store series data for a specific match type
 
-  
+
   useEffect(() => {
     allData();
   }, []);
@@ -22,7 +22,7 @@ const App = () => {
       })
       .then((res) => {
         console.log(res.data.typeMatches);
-        setData(res.data.typeMatches); 
+        setData(res.data.typeMatches);
 
       })
       .catch((err) => {
@@ -33,16 +33,11 @@ const App = () => {
   //(header tab)
   const handleMatchClick = (matchType) => {
 
-    console.log(matchType);
-    
-    const seriesMatches = matchType.seriesMatches.map((seriesMatch) => {
-      console.log("=======>>",seriesMatch);
-      
-      return seriesMatch.seriesAdWrapper?.seriesName;
-    }).filter(Boolean); // Remove any undefined/null entries
+    console.log("======>>>",matchType.seriesMatches);
+
+    setSeriesList(matchType.seriesMatches.map((seriesMatch) => seriesMatch.seriesAdWrapper?.seriesName).filter(Boolean)); 
 
 
-    setSeriesList(seriesMatches); // Update series list
   };
 
   return (
@@ -51,16 +46,16 @@ const App = () => {
         <h1 className="title">Cricket Match Series</h1>
         <nav className="nav">
           {
-          data.map((matchType, index) => (         //international, ledged, dynemic,women
-            <div 
-              key={index} 
-              className="nav-item" 
-              onClick={() => handleMatchClick(matchType)}
-            >
-              {matchType.matchType}         
-            {/* sub-matches series */}
-            </div>
-          ))
+            data.map((matchType, index) => (         //international, ledged, dynemic,women
+              <div
+                key={index}
+                className="nav-item"
+                onClick={() => handleMatchClick(matchType)}
+              >
+                {matchType.matchType}
+                {/* sub-matches series */}
+              </div>
+            ))
           }
         </nav>
       </header>
@@ -69,15 +64,15 @@ const App = () => {
 
       <div className="series-list">
         {
-       
+
           seriesList.map((seriesName, index) => (
-            
+
             <div key={index} className="series-card">
               <p>{seriesName}</p>
             </div>
-            
+
           ))
-        
+
         }
       </div>
     </div>
