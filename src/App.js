@@ -21,6 +21,8 @@ const App = () => {
         },
       })
       .then((res) => {
+        console.log(res);
+        
         console.log(res.data.typeMatches);
         setData(res.data.typeMatches);
 
@@ -35,7 +37,10 @@ const App = () => {
 
     console.log("======>>>",matchType.seriesMatches);
 
-    setSeriesList(matchType.seriesMatches.map((seriesMatch) => seriesMatch.seriesAdWrapper?.seriesName).filter(Boolean)); 
+    const setSeriesName = matchType.seriesMatches.map((seriesMatch) => seriesMatch.seriesAdWrapper?.seriesName).filter(Boolean)
+
+    setSeriesList(setSeriesName)
+    // setSeriesList(matchType.seriesMatches.map((seriesMatch) => seriesMatch.seriesAdWrapper?.seriesName).filter(Boolean)); 
 
 
   };
@@ -52,7 +57,7 @@ const App = () => {
                 className="nav-item"
                 onClick={() => handleMatchClick(matchType)}
               >
-                {/* sub-matches series */}
+                {/* matches series */}
                 {matchType.matchType}
               </div>
             ))
